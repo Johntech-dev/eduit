@@ -126,7 +126,7 @@ export default function WaitlistForm() {
               <Input
                 id="Phone nuber"
                 name="phone nmber"
-                type="number"
+                type="text"
                 value={formData.phonenumber}
                 onChange={handleChange}
                 placeholder="09100000000"

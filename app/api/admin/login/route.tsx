@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   // Compare with environment variables
   if (
     username === process.env.NEXT_PUBLIC_ADMIN_USERNAME && 
-    password === process.env.ADMIN_PASSWORD
+    password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD
   ) {
     // Create a JWT token
     const token = sign(
