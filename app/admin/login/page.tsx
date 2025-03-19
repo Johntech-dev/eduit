@@ -35,8 +35,8 @@ export default function AdminLogin() {
       const data = await response.json()
       
       if (response.ok) {
-        // Login successful
-        localStorage.setItem("adminAuthenticated", "true")
+        // Login successful - store the auth token in a cookie instead of localStorage
+        document.cookie = `adminAuthToken=${data.token}; path=/; max-age=${60*60*24*7}; SameSite=Strict`;
         router.push("/admin")
       } else {
         // Login failed
