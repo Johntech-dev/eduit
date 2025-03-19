@@ -1,44 +1,63 @@
 "use client"
-
 import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Rocket } from "lucide-react"
-
+import { Loader2, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import Image from "next/image"
 
 export default function AdminLogin() {
   const router = useRouter()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    // In a real application, you would validate credentials against a database
-    // This is a simple demo with hardcoded credentials
-    if (username === "admin" && password === "password") {
-      // Set a session cookie or token in a real application
-      localStorage.setItem("adminAuthenticated", "true")
-      router.push("/admin")
-    } else {
-      setError("Invalid credentials. Try admin/password for demo.")
+    setIsLoading(true)
+    
+    try {
+      // Send credentials to a server-side API route for validation
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      })
+      
+      const data = await response.json()
+      
+      if (response.ok) {
+        // Login successful
+        localStorage.setItem("adminAuthenticated", "true")
+        router.push("/admin")
+      } else {
+        // Login failed
+        setError(data.message || "Invalid credentials")
+        setIsLoading(false)
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again.")
+      setIsLoading(false)
     }
+  }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
   }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
       <Link href="/" className="absolute top-8 left-8 flex items-center">
-        <Rocket className="h-6 w-6 text-orange-500" />
-        <span className="ml-2 text-2xl font-bold text-green-600">EduIT</span>
+        <Image src="/logo.png" alt="EduIT Logo" width={100} height={100} />
       </Link>
-
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl text-center">Admin Login</CardTitle>
@@ -57,30 +76,57 @@ export default function AdminLogin() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
+                disabled={isLoading}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={isLoading}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  onClick={togglePasswordVisibility}
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full bg-green-600 hover:bg-green-700">
-              Login
+            <Button 
+              type="submit" 
+              className="w-full bg-green-600 hover:bg-green-700"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Logging in...
+                </>
+              ) : (
+                "Login"
+              )}
             </Button>
           </CardFooter>
         </form>
       </Card>
       <p className="mt-4 text-sm text-gray-500">
-        For demo purposes, use username: <strong>admin</strong> and password: <strong>password</strong>
+        Please contact administrator if you need access
       </p>
     </div>
   )
 }
-

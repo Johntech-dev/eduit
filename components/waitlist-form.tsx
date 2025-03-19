@@ -17,6 +17,7 @@ export default function WaitlistForm() {
   const [formData, setFormData] = useState({
     schoolName: "",
     email: "",
+    phonenumber: "",
   })
   const [status, setStatus] = useState<{ type: string; message: string } | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -38,7 +39,7 @@ export default function WaitlistForm() {
         setStatus({ type: "error", message: result.error })
       } else {
         setStatus({ type: "success", message: "Your school has been added to our waitlist with a 50% discount!" })
-        setFormData({ schoolName: "", email: "" })
+        setFormData({ schoolName: "", email: "", phonenumber: "" })
       }
     } catch (error) {
       setStatus({ type: "error", message: "Something went wrong. Please try again." })
@@ -111,6 +112,24 @@ export default function WaitlistForm() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="school@example.com"
+                required
+                className="transition-all duration-300 focus:ring-2 focus:ring-green-500"
+              />
+            </motion.div>
+            <motion.div
+              className="space-y-2"
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Label htmlFor="email">Phone Number</Label>
+              <Input
+                id="Phone nuber"
+                name="phone nmber"
+                type="number"
+                value={formData.phonenumber}
+                onChange={handleChange}
+                placeholder="09100000000"
                 required
                 className="transition-all duration-300 focus:ring-2 focus:ring-green-500"
               />

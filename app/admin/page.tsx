@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { getWaitlistEntries, getNotificationSubscribers, sendNotification } from "@/lib/actions"
 import { exportToCSV } from "@/lib/utils"
+import Image from "next/image"
 
 export default function AdminDashboard() {
   const router = useRouter()
@@ -125,10 +126,9 @@ export default function AdminDashboard() {
     <div className="flex min-h-screen flex-col">
       <header className="border-b bg-white px-4 lg:px-6 h-16 flex items-center">
         <Link className="flex items-center justify-center" href="/">
-          <Rocket className="h-6 w-6 text-orange-500" />
-          <span className="ml-2 text-2xl font-bold text-green-600">EduIT</span>
+         <Image src="/logo.png" alt="EduIT Logo" width={100} height={100} />
         </Link>
-        <span className="ml-2 text-sm font-medium text-gray-500">Admin Dashboard</span>
+        <span className="ml-2 text-sm text-center text-gray-500 text-medium">Admin Dashboard</span>
         <Button variant="ghost" size="icon" onClick={handleLogout} className="ml-auto">
           <LogOut className="h-5 w-5" />
           <span className="sr-only">Logout</span>
@@ -192,12 +192,14 @@ export default function AdminDashboard() {
                           <div>School Name</div>
                           <div>Email</div>
                           <div>Date</div>
+                          <div>Phone Number</div>
                         </div>
                         <div className="divide-y">
                           {waitlistPaginated.map((entry, index) => (
                             <div key={index} className="grid grid-cols-3 gap-4 p-4">
                               <div>{entry.school_name}</div>
                               <div>{entry.email}</div>
+                              <div>{entry.phone_number}</div>
                               <div>{formatDate(entry.created_at)}</div>
                             </div>
                           ))}

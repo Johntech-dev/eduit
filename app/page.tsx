@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button"
 import NotifyMeModal from "@/components/notify-me-modal"
 import WaitlistForm from "@/components/waitlist-form"
 import { FadeIn, ScrollReveal, StaggerContainer, StaggerItem, FloatingAnimation } from "@/components/animations"
+import Image from "next/image"
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="px-4 lg:px-6 h-16 flex items-center">
         <Link className="flex items-center justify-center" href="#">
-          <Rocket className="h-6 w-6 text-orange-500" />
-          <span className="ml-2 text-2xl font-bold text-green-600">EduIT</span>
+           <Image src="/logo.png" alt="EduIT Logo" width={100} height={100} />
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
           <Link className="text-sm font-medium hover:underline underline-offset-4" href="#features">
