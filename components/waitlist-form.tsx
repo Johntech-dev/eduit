@@ -122,10 +122,10 @@ export default function WaitlistForm() {
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <Label htmlFor="email">Phone Number</Label>
+              <Label htmlFor="phonenumber">Phone Number</Label>
               <Input
-                id="Phone nuber"
-                name="phone nmber"
+                id="phonenumber"
+                name="phonenumber"
                 type="text"
                 value={formData.phonenumber}
                 onChange={handleChange}
